@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <title>Interactive-Photo-Gallery</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+     <script src="https://cdn.jsdelivr.net/jquery/2.2.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet"> </head>
+
+<body>
+    <div id="container">
+        <div id="omdb">
+        </div>
+        <div>
+        </div>
+    </div>
+    <script>
+     $(document).ready(function(){
+         console.log('Hey');
+         var movies = ['Goal'];
+         $.ajax({
+                url : 'http://www.omdbapi.com/',
+                type : 'GET',
+                data : {
+                    't' : 'Goal'
+                },
+                dataType:'json',
+                success : function(data) {              
+                    alert('Data: '+data);
+                },
+                error : function(request,error)
+                {
+                    alert("Request: "+JSON.stringify(request));
+                }
+         });
+     })
+    
+    </script>
+</body>
