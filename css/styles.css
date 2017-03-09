@@ -1,4 +1,36 @@
+* {
+    box-sizing: border-box;
+}
+
+ul {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+
 #container{
     max-width: 1250px;
     margin: auto;
+}
+h1 {
+    text-align: center;
+    font-size: 3em;
+    color: cadetblue;
+}
+#movie-list {
+    display: -webkit-flex;
+    display: flex;
+    align-content: center;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+h1,#movie-list li {
+    padding: 20px;
+}
+img {
+    width: 150px;
+    height: 150px;
 }

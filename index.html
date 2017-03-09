@@ -13,30 +13,61 @@
 <body>
     <div id="container">
         <div id="omdb">
+            <div><h1>My All Time Favorite Movies</h1></div>
+            <div id="movie-gallery">
+                <ul id="movie-list">
+                
+                </ul>
+            </div>
         </div>
         <div>
         </div>
     </div>
     <script>
-     $(document).ready(function(){
-         console.log('Hey');
-         var movies = ['Goal'];
+//     $(document).ready(function(){
+         var moviesName = ['Shawshank Redemption','The Departed','Django Unchained', 'Pulp Fiction','The Dark Knight','The Green Mile'];
+         var sortableMoviesByYear = [];
+         var objMovies = {};
+         for(let i=0; i<moviesName.length; i++){
          $.ajax({
                 url : 'http://www.omdbapi.com/',
                 type : 'GET',
                 data : {
-                    't' : 'Goal'
+                    't' : moviesName[i]
                 },
                 dataType:'json',
-                success : function(data) {              
-                    alert('Data: '+data);
+                success : function(data) {
+                    console.log("Success");
+                    objMovies[moviesName[i]] = data;
+                    sortableMoviesByYear.push([moviesName[i],data.Year]);
+                    createList(data);
                 },
                 error : function(request,error)
                 {
                     alert("Request: "+JSON.stringify(request));
                 }
          });
-     })
+        }
+        
+       var sortedMoviesByYear =  sortableMoviesByYear.sort(function(a,b){
+            return parseInt(a[1]) - parseInt(b[1]);
+        });
+        
+        function createList(data){
+            var $li = $('<li></li>');
+            var $a = $('<a></a>');
+            var $img = $('<img/>');
+
+            $a.attr('href', data.Poster);
+            $a.attr('Title', data.Title);            
+            $img.attr('src',data.Poster);
+            
+            $a.append($img);
+            $li.append($a);
+            
+            $('#movie-list').append($li);
+        }
+//     });
     
     </script>
 </body>
