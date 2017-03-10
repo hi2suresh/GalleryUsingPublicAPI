@@ -19,14 +19,30 @@
                 
                 </ul>
             </div>
+            <div id="sort-div">
+                <button id="sort-button">Sort Movies By Year</button>
+            </div>
+        </div>
+        
+         <div id="omdb">
+            <div><h1>My All Time Favorite Movies</h1></div>
+            <div id="movie-gallery">
+                <ul id="movie-list">
+                
+                </ul>
+            </div>
+            <div id="sort-div">
+                <button id="sort-button">Sort Movies By Year</button>
+            </div>
         </div>
         <div>
-        </div>
+      </div>
     </div>
     <script>
 //     $(document).ready(function(){
-         var moviesName = ['Shawshank Redemption','The Departed','Django Unchained', 'Pulp Fiction','The Dark Knight','The Green Mile'];
+         var moviesName = ['The Departed','Django Unchained', 'Shawshank Redemption', 'The Green Mile','Pulp Fiction','The Dark Knight'];
          var sortableMoviesByYear = [];
+         var sortedMoviesByYear = [];
          var objMovies = {};
          for(let i=0; i<moviesName.length; i++){
          $.ajax({
@@ -36,9 +52,9 @@
                     't' : moviesName[i]
                 },
                 dataType:'json',
-                success : function(data) {
-                    console.log("Success");
+                success : function(data) {                    
                     objMovies[moviesName[i]] = data;
+                    //Store movie name and its year for sorting purpose
                     sortableMoviesByYear.push([moviesName[i],data.Year]);
                     createList(data);
                 },
@@ -48,11 +64,7 @@
                 }
          });
         }
-        
-       var sortedMoviesByYear =  sortableMoviesByYear.sort(function(a,b){
-            return parseInt(a[1]) - parseInt(b[1]);
-        });
-        
+     
         function createList(data){
             var $li = $('<li></li>');
             var $a = $('<a></a>');
@@ -67,6 +79,34 @@
             
             $('#movie-list').append($li);
         }
+        
+        $('#sort-button').click(function(){
+            sortedMoviesByYear =  sortableMoviesByYear.sort(function(a,b){           
+            return parseInt(a[1]) - parseInt(b[1]);
+        });
+            //Remove the previously created list items
+            $("#movie-list").empty();
+            for(let i=0; i<sortedMoviesByYear.length; i++){
+                createList(objMovies[sortedMoviesByYear[i][0]]);
+            }
+        });           
+        
+        
+        $.ajax({
+                url : 'https://openlibrary.org/api/books',
+                type : 'GET',
+                data : {
+                    'bibkeys' : "ISBN:9780980200447"
+                },
+                dataType:'jsonp',
+                success : function(data) {                    
+                   console.log(data);
+                },
+                error : function(request,error)
+                {
+                    alert("Request: "+JSON.stringify(request));
+                }
+         });
 //     });
     
     </script>

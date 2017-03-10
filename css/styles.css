@@ -15,22 +15,39 @@ a {
     max-width: 1250px;
     margin: auto;
 }
+
+#omdb {
+    border-bottom: 2px solid blueviolet;
+}
 h1 {
     text-align: center;
     font-size: 3em;
     color: cadetblue;
 }
+
 #movie-list {
     display: -webkit-flex;
     display: flex;
     align-content: center;
-    flex-wrap: wrap;
-    padding: 20px;
+    flex-wrap: wrap;    
 }
+
 h1,#movie-list li {
     padding: 20px;
 }
+
 img {
     width: 150px;
-    height: 150px;
+    height: 200px;
+}
+
+#sort-div {
+    margin: auto;
+    text-align: center;
+}
+
+#sort-div button {
+    width: 80%;
+    height: 40px;
+    margin-bottom: 30px;
 }
