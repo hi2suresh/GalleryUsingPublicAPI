@@ -25,14 +25,14 @@ h1 {
     color: cadetblue;
 }
 
-#movie-list {
+#movie-list, #book-list {
     display: -webkit-flex;
     display: flex;
     align-content: center;
     flex-wrap: wrap;    
 }
 
-h1,#movie-list li {
+h1,#movie-list li,  #book-list li{
     padding: 20px;
 }
 
