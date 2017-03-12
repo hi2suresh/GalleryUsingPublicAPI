@@ -1,17 +1,43 @@
-//     $(document).ready(function(){
+     $(document).ready(function(){
+        /********************************
+        Variables for Movies
+        ********************************/
          var movieList = $('#movie-list');
          var bookList = $('#book-list');
          var moviesName = ['The Departed','Django Unchained', 'Shawshank Redemption', 'The Green Mile','Pulp Fiction','The Dark Knight'];
          var sortableMoviesByYear = [];
          var sortedMoviesByYear = [];
-        
-         var objStoredMovies = JSON.parse(localStorage.getItem('storedMovieDetails'));
+        //Movie details to be shown in lightbox mode  
+        var movieGalleryDetails = {
+             titleSrc: function(item) {
+                 var imageTittle = item.el[0].title;
+                 var objStoredMovies = JSON.parse(localStorage.getItem('storedMovieDetails'));
+                 var $title = $('<p class="gallery-details"></p>');
+                 $title.text('Title: ' + imageTittle);
+                 
+                 var $released = $('<p class="gallery-details"></p>');
+                 $released.text('Released: ' + objStoredMovies[imageTittle]['Released']);
+                 
+                 var $plot = $('<p></p>');
+                 $plot.text('Plot: ' + objStoredMovies[imageTittle]['Plot']);
+                 
+                 var $awards = $('<p></p>');
+                 $awards.text('Awards: ' + objStoredMovies[imageTittle]['Awards']);
+                 
+                 return $title.html() + '<br/>' + $released.html() + '<br/>' + $plot.html() + '<br/>' + $awards.html();
+             }
+        };
+        //Get movie details from local storage if it exists
+        var objStoredMovies = JSON.parse(localStorage.getItem('storedMovieDetails'));
         if(objStoredMovies === null){
                 getMovieDetails();
             }
         else{
             appendMovieList(moviesName);
         }
+        /********************************
+        Get movie details from OMDB API
+        ********************************/
         function getMovieDetails(){
          var objMovies = {};
          for(let i=0; i<moviesName.length; i++){
@@ -35,8 +61,8 @@
                 }
          });
         }
-        
-             $(document).ajaxStop(function() {
+        //After all of the ajax calls are complete, store the details in local storage    
+        $(document).ajaxStop(function() {
                 localStorage.setItem('storedMovieDetails',JSON.stringify(objMovies));
                 var tempSortedMoviesByYear =  sortableMoviesByYear.sort(function(a,b){           
                                         return parseInt(a[1]) - parseInt(b[1]);
@@ -49,7 +75,27 @@
             });      
        
     }
+         //Append Movie List Images
+         function appendMovieList(movieArray){
+             for(let i=0; i<movieArray.length; i++){
+                createList(movieList,objStoredMovies[movieArray[i]]['Poster'], movieArray[i]);
+            }
+        }
+        
+        
+        //Add event listener movie sort button
+        $('#movie-sort-button').click(function(){
+            objStoredMovies = JSON.parse(localStorage.getItem('storedMovieDetails'));
+            sortedMoviesByYear =  JSON.parse(localStorage.getItem('sortedMoviesByYear'));
+            //Remove the previously created list items
+            $("#movie-list").empty();
+            appendMovieList(sortedMoviesByYear);
+            invokeMagnificientPopup($('#movie-list a'), movieGalleryDetails);
+        });        
      
+        /********************************
+        Create Image List in the Web page
+        ********************************/
         function createList(parentElement,dataImage,dataTitle){
             var $li = $('<li></li>');
             var $a = $('<a></a>');
@@ -64,21 +110,35 @@
             
             parentElement.append($li);
         }
+         
+         
         
-        $('#movie-sort-button').click(function(){
-            objStoredMovies = JSON.parse(localStorage.getItem('storedMovieDetails'));
-            sortedMoviesByYear =  JSON.parse(localStorage.getItem('sortedMoviesByYear'));
-            //Remove the previously created list items
-            $("#movie-list").empty();
-            appendMovieList(sortedMoviesByYear);
-            invokeMagnificientPopup($('#movie-list a'), movieGalleryDetails);
-        });           
-        
+        /********************************
+        Variables for Books
+        ********************************/
         var openLibraryURL = 'https://openlibrary.org/api/books';
         var coversURL = 'https://covers.openlibrary.org/b/';
-        var books = ["OLID:OL10446359M", "OLID:OL7829767M", "OLID:OL25317207M", "OLID:OL10682856M", "OLID:OL10236418M", "OLID:OL24982483M"];
+        var books = ["OLID:OL10446359M", "OLID:OL7829767M", "OLID:OL25317207M", "OLID:OL10682856M", "OLID:OL10236418M", "OLID:OL24982483M"];         
         var booksName = [];
-
+       //Book details to be shown in lightbox mode 
+        var bookGalleryDetails = {
+             titleSrc: function(item) {
+                 var imageTittle = item.el[0].title;
+                 var objStoredBooks = JSON.parse(localStorage.getItem('storedBookDetails'));
+                 var $title = $('<p class="gallery-details"></p>');
+                 $title.text('Title: ' + imageTittle);
+                 var olid = objStoredBooks[imageTittle]['OLID'];
+                 var $released = $('<p class="gallery-details"></p>');
+                 $released.text('Released: ' + objStoredBooks[imageTittle][olid].publish_date);
+                 
+                 var $pages = $('<p class="gallery-details"></p>');
+                 $pages.text('Number Of Pages: ' + objStoredBooks[imageTittle][olid].number_of_pages);
+                                                  
+                 return $title.html() + '<br/>' + $released.html() + '<br/>' + $pages.html();
+             }
+        };
+        
+        //Get Books details from local storage if it exists
         var objStoredBooks = JSON.parse(localStorage.getItem('storedBookDetails'));
         if(objStoredBooks === null){
                 getBooksDetail();
@@ -88,19 +148,10 @@
             appendBookList(bookArray);
         }
         
-         function appendMovieList(movieArray){
-             for(let i=0; i<movieArray.length; i++){
-                createList(movieList,objStoredMovies[movieArray[i]]['Poster'], movieArray[i]);
-            }
-        }
         
-        function appendBookList(bookArray){
-             for(let i=0; i<bookArray.length; i++){
-                createList(bookList,objStoredBooks[bookArray[i]]['coversURL'], bookArray[i]);
-            }
-        }
-        
-        
+        /********************************
+        Get Book details from OpenLib
+        ********************************/
         function getBooksDetail(){
         var objBooks = {};
         for(let i=0; i<books.length; i++){
@@ -116,6 +167,7 @@
                     success : function(data) {
                       objBooks[data[books[i]].title] = data;
                       objBooks[data[books[i]].title]['coversURL'] =  coversURL + books[i].replace(':','/') +'-L.jpg';
+                      objBooks[data[books[i]].title]['OLID'] = books[i];
                       booksName.push(data[books[i]].title);
                       createList(bookList, objBooks[data[books[i]].title]['coversURL'], data[books[i]].title );
                     },
@@ -125,71 +177,46 @@
                     }
              });
             }
+            //After all of the ajax calls are complete, store the book details in local storage
             $(document).ajaxStop(function() {
                 localStorage.setItem('storedBookDetails',JSON.stringify(objBooks));               
                 localStorage.setItem('storedBookNames',JSON.stringify(booksName)); 
                 localStorage.setItem('sortedBookNames',JSON.stringify(booksName.sort())); 
+                invokeMagnificientPopup($('#book-list a'), bookGalleryDetails);
             });            
         }
         
+        //Append Book List Images
+        function appendBookList(bookArray){
+             for(let i=0; i<bookArray.length; i++){
+                createList(bookList,objStoredBooks[bookArray[i]]['coversURL'], bookArray[i]);
+            }
+        }
+        
+
+        //Add event listener for Books sort button
          $('#book-sort-button').click(function(){
             objStoredBooks = JSON.parse(localStorage.getItem('storedBookDetails'));
             sortedBooks =  JSON.parse(localStorage.getItem('sortedBookNames'));
             //Remove the previously created list items
             $("#book-list").empty();
             appendBookList(sortedBooks);
+            invokeMagnificientPopup($('#book-list a'), bookGalleryDetails);
             
-        });
-        
-        var movieGalleryDetails = {
-             titleSrc: function(item) {
-                 var imageTittle = item.el[0].title;
-                 var objStoredMovies = JSON.parse(localStorage.getItem('storedMovieDetails'));
-                 var $title = $('<p class="gallery-details"></p>');
-                 $title.text('Title: ' + imageTittle);
-                 
-                 var $released = $('<p class="gallery-details"></p>');
-                 $released.text('Released: ' + objStoredMovies[imageTittle]['Released']);
-                 
-                 var $plot = $('<p></p>');
-                 $plot.text('Plot: ' + objStoredMovies[imageTittle]['Plot']);
-                 
-                 var $awards = $('<p></p>');
-                 $awards.text('Awards: ' + objStoredMovies[imageTittle]['Awards']);
-                 
-                 return $title.html() + '<br/>' + $released.html() + '<br/>' + $plot.html() + '<br/>' + $awards.html();
-             }
-        };
+        });       
 
-         var bookGalleryDetails = {
-             titleSrc: function(item) {
-                 var imageTittle = item.el[0].title;
-                 var objStoredBooks = JSON.parse(localStorage.getItem('storedBookDetails'));
-                 var $title = $('<p class="gallery-details"></p>');
-                 $title.text('Title: ' + imageTittle);
-                 
-                 var $released = $('<p class="gallery-details"></p>');
-                 $released.text('Released: ' + objStoredMovies[imageTittle]['Released']);
-                 
-                 var $plot = $('<p></p>');
-                 $plot.text('Plot: ' + objStoredMovies[imageTittle]['Plot']);
-                 
-                 var $awards = $('<p></p>');
-                 $awards.text('Awards: ' + objStoredMovies[imageTittle]['Awards']);
-                 
-                 return $title.html() + '<br/>' + $released.html() + '<br/>' + $plot.html() + '<br/>' + $awards.html();
-             }
-        };
-
+        /***************************************
+        Initialize Magnficient Popup for lightbox
+        *****************************************/
         function invokeMagnificientPopup(parentGallery, galleryDetails){            
               parentGallery.magnificPopup({
                 type: 'image',
                  gallery:{
                     enabled:true
                 },
-        image: movieGalleryDetails
-        });
+                image: galleryDetails
+              });
         }
         
-//     });
+     });
     
