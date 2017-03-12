@@ -5,10 +5,27 @@
     <title>Interactive-Photo-Gallery</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-     <script src="https://cdn.jsdelivr.net/jquery/2.2.4/jquery.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet"> 
+
+    <script src="https://cdn.jsdelivr.net/jquery/2.2.4/jquery.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+<!--
+    <link href="//cdn.rawgit.com/noelboss/featherlight/1.7.1/release/featherlight.min.css" type="text/css" rel="stylesheet" />
+    <link href="//cdn.rawgit.com/noelboss/featherlight/1.7.1/release/featherlight.gallery.min.css" type="text/css" rel="stylesheet" />
+    <script src="//cdn.rawgit.com/noelboss/featherlight/1.7.1/release/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="//cdn.rawgit.com/noelboss/featherlight/1.7.1/release/featherlight.gallery.min.js" type="text/javascript" charset="utf-8"></script>
+    
+-->
+    
+
+<!--    <script src="js/jquery.lightbox-0.5-mod.js"></script>-->
+<!--    <link rel="stylesheet" type="text/css" href="css/jquery.lightbox-0.5.css" media="screen" />-->
+    
+
+    <link rel="stylesheet" href="css/magnific-popup.css">
     <link rel="stylesheet" href="css/reset.css">
     <link rel="stylesheet" href="css/styles.css">
-    <link href="https://fonts.googleapis.com/css?family=Merriweather" rel="stylesheet"> </head>
+</head>
 
 <body>
     <div id="container">
@@ -38,149 +55,6 @@
         <div>
       </div>
     </div>
-    <script>
-//     $(document).ready(function(){
-         var movieList = $('#movie-list');
-         var bookList = $('#book-list');
-         var moviesName = ['The Departed','Django Unchained', 'Shawshank Redemption', 'The Green Mile','Pulp Fiction','The Dark Knight'];
-         var sortableMoviesByYear = [];
-         var sortedMoviesByYear = [];
-        
-         var objStoredMovies = JSON.parse(localStorage.getItem('storedMovieDetails'));
-        if(objStoredMovies === null){
-                getMovieDetails();
-            }
-        else{
-            appendMovieList(moviesName);
-        }
-        function getMovieDetails(){
-         var objMovies = {};
-         for(let i=0; i<moviesName.length; i++){
-         $.ajax({
-                url : 'http://www.omdbapi.com/',
-                type : 'GET',
-                data : {
-                    't' : moviesName[i]
-                },
-                dataType:'json',
-                success : function(data) {                    
-                    objMovies[moviesName[i]] = data;
-                    //Store movie name and its year for sorting purpose
-                    sortableMoviesByYear.push([moviesName[i],data.Year]);
-                    createList(movieList,data.Poster, data.Title);
-                },
-                error : function(request,error)
-                {
-                    alert("Request: "+JSON.stringify(request));
-                }
-         });
-        }
-        
-             $(document).ajaxStop(function() {
-                localStorage.setItem('storedMovieDetails',JSON.stringify(objMovies));
-                var tempSortedMoviesByYear =  sortableMoviesByYear.sort(function(a,b){           
-                                        return parseInt(a[1]) - parseInt(b[1]);
-                                    });
-                 for(let i=0; i<tempSortedMoviesByYear.length; i++){
-                     sortedMoviesByYear.push(tempSortedMoviesByYear[i][0]);
-                 }
-                localStorage.setItem('sortedMoviesByYear',JSON.stringify(sortedMoviesByYear)); 
-            });      
-       
-    }
-     
-        function createList(parentElement,dataImage,dataTitle){
-            var $li = $('<li></li>');
-            var $a = $('<a></a>');
-            var $img = $('<img/>');
+    <script src="js/main.js"></script> 
 
-            $a.attr('href',dataImage);
-            $a.attr('Title',dataImage);            
-            $img.attr('src',dataImage);
-            
-            $a.append($img);
-            $li.append($a);
-            
-            parentElement.append($li);
-        }
-        
-        $('#movie-sort-button').click(function(){
-            objStoredMovies = JSON.parse(localStorage.getItem('storedMovieDetails'));
-            sortedMoviesByYear =  JSON.parse(localStorage.getItem('sortedMoviesByYear'));
-            //Remove the previously created list items
-            $("#movie-list").empty();
-            appendMovieList(sortedMoviesByYear);
-//            for(let i=0; i<sortedMoviesByYear.length; i++){
-//                createList(objMovies[sortedMoviesByYear[i][0]]);
-//            }
-        });           
-        
-        var openLibraryURL = 'https://openlibrary.org/api/books';
-        var coversURL = 'https://covers.openlibrary.org/b/';
-        var books = ["OLID:OL10446359M", "OLID:OL7829767M", "OLID:OL25317207M", "OLID:OL10682856M", "OLID:OL10236418M", "OLID:OL24982483M"];
-        var booksName = [];
-
-        var objStoredBooks = JSON.parse(localStorage.getItem('storedBookDetails'));
-        if(objStoredBooks === null){
-                getBooksDetail();
-            }
-        else{
-            var bookArray = JSON.parse(localStorage.getItem('storedBookNames'));
-            appendBookList(bookArray);
-        }
-        
-         function appendMovieList(movieArray){
-             for(let i=0; i<movieArray.length; i++){
-                createList(movieList,objStoredMovies[movieArray[i]]['Poster'], movieArray[i]);
-            }
-        }
-        
-        function appendBookList(bookArray){
-             for(let i=0; i<bookArray.length; i++){
-                createList(bookList,objStoredBooks[bookArray[i]]['coversURL'], bookArray[i]);
-            }
-        }
-        
-        
-        function getBooksDetail(){
-        var objBooks = {};
-        for(let i=0; i<books.length; i++){
-            $.ajax({
-                    url :'https://openlibrary.org/api/books',
-                    type : 'GET',
-                    data : {
-                        'bibkeys' : books[i],
-                         jscmd:'data',
-                    },
-                    dataType:'jsonp',
-
-                    success : function(data) {
-                      objBooks[data[books[i]].title] = data;
-                      objBooks[data[books[i]].title]['coversURL'] =  coversURL + books[i].replace(':','/') +'-L.jpg';
-                      booksName.push(data[books[i]].title);
-                      createList(bookList, objBooks[data[books[i]].title]['coversURL'], data[books[i]].title );
-                    },
-                    error : function(request,error)
-                    {
-                        alert("Request: "+JSON.stringify(request));
-                    }
-             });
-            }
-            $(document).ajaxStop(function() {
-                localStorage.setItem('storedBookDetails',JSON.stringify(objBooks));               
-                localStorage.setItem('storedBookNames',JSON.stringify(booksName)); 
-                localStorage.setItem('sortedBookNames',JSON.stringify(booksName.sort())); 
-            });            
-        }
-        
-         $('#book-sort-button').click(function(){
-            objStoredBooks = JSON.parse(localStorage.getItem('storedBookDetails'));
-            sortedBooks =  JSON.parse(localStorage.getItem('sortedBookNames'));
-            //Remove the previously created list items
-            $("#book-list").empty();
-            appendBookList(sortedBooks);
-        });         
-//     });
-    
-    </script>
 </body>
