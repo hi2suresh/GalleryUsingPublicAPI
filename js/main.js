@@ -3,26 +3,26 @@
         Variables for Movies
         ********************************/
          var movieList = $('#movie-list');
-         var bookList = $('#book-list');
-         var moviesName = ['The Departed','Django Unchained', 'Shawshank Redemption', 'The Green Mile','Pulp Fiction','The Dark Knight'];
+         var moviesName = ['The Departed','Django Unchained', 'The Shawshank Redemption', 'The Green Mile','Pulp Fiction','The Dark Knight'];
          var sortableMoviesByYear = [];
          var sortedMoviesByYear = [];
         //Movie details to be shown in lightbox mode  
         var movieGalleryDetails = {
              titleSrc: function(item) {
-                 var imageTittle = item.el[0].title;
+                 var imageTitle = item.el[0].title;
+                 console.log(imageTitle);
                  var objStoredMovies = JSON.parse(localStorage.getItem('storedMovieDetails'));
                  var $title = $('<p class="gallery-details"></p>');
-                 $title.text('Title: ' + imageTittle);
+                 $title.text('Title: ' + imageTitle);
                  
                  var $released = $('<p class="gallery-details"></p>');
-                 $released.text('Released: ' + objStoredMovies[imageTittle]['Released']);
+                 $released.text('Released: ' + objStoredMovies[imageTitle]['Released']);
                  
                  var $plot = $('<p></p>');
-                 $plot.text('Plot: ' + objStoredMovies[imageTittle]['Plot']);
+                 $plot.text('Plot: ' + objStoredMovies[imageTitle]['Plot']);
                  
                  var $awards = $('<p></p>');
-                 $awards.text('Awards: ' + objStoredMovies[imageTittle]['Awards']);
+                 $awards.text('Awards: ' + objStoredMovies[imageTitle]['Awards']);
                  
                  return $title.html() + '<br/>' + $released.html() + '<br/>' + $plot.html() + '<br/>' + $awards.html();
              }
@@ -34,6 +34,7 @@
             }
         else{
             appendMovieList(moviesName);
+            invokeMagnificientPopup($('#movie-list a'), movieGalleryDetails);
         }
         /********************************
         Get movie details from OMDB API
@@ -61,7 +62,7 @@
                 }
          });
         }
-        //After all of the ajax calls are complete, store the details in local storage    
+        //After all of the ajax calls are complete, store the movie details in local storage    
         $(document).ajaxStop(function() {
                 localStorage.setItem('storedMovieDetails',JSON.stringify(objMovies));
                 var tempSortedMoviesByYear =  sortableMoviesByYear.sort(function(a,b){           
@@ -71,7 +72,7 @@
                      sortedMoviesByYear.push(tempSortedMoviesByYear[i][0]);
                  }
                 localStorage.setItem('sortedMoviesByYear',JSON.stringify(sortedMoviesByYear)); 
-                 invokeMagnificientPopup($('#movie-list a'), movieGalleryDetails);
+                invokeMagnificientPopup($('#movie-list a'), movieGalleryDetails);
             });      
        
     }
@@ -94,7 +95,7 @@
         });        
      
         /********************************
-        Create Image List in the Web page
+        Create Images List in the Web page
         ********************************/
         function createList(parentElement,dataImage,dataTitle){
             var $li = $('<li></li>');
@@ -116,6 +117,7 @@
         /********************************
         Variables for Books
         ********************************/
+       var bookList = $('#book-list');
         var openLibraryURL = 'https://openlibrary.org/api/books';
         var coversURL = 'https://covers.openlibrary.org/b/';
         var books = ["OLID:OL10446359M", "OLID:OL7829767M", "OLID:OL25317207M", "OLID:OL10682856M", "OLID:OL10236418M", "OLID:OL24982483M"];         
@@ -146,6 +148,7 @@
         else{
             var bookArray = JSON.parse(localStorage.getItem('storedBookNames'));
             appendBookList(bookArray);
+            invokeMagnificientPopup($('#book-list a'), bookGalleryDetails);
         }
         
         
