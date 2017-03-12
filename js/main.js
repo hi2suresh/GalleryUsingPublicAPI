@@ -10,7 +10,6 @@
         var movieGalleryDetails = {
              titleSrc: function(item) {
                  var imageTitle = item.el[0].title;
-                 console.log(imageTitle);
                  var objStoredMovies = JSON.parse(localStorage.getItem('storedMovieDetails'));
                  var $title = $('<p class="gallery-details"></p>');
                  $title.text('Title: ' + imageTitle);
@@ -105,6 +104,7 @@
             $a.attr('href',dataImage);
             $a.attr('Title',dataTitle);            
             $img.attr('src',dataImage);
+            $img.attr('alt',dataTitle);
             
             $a.append($img);
             $li.append($a);
@@ -120,7 +120,7 @@
        var bookList = $('#book-list');
         var openLibraryURL = 'https://openlibrary.org/api/books';
         var coversURL = 'https://covers.openlibrary.org/b/';
-        var books = ["OLID:OL10446359M", "OLID:OL7829767M", "OLID:OL25317207M", "OLID:OL10682856M", "OLID:OL10236418M", "OLID:OL24982483M"];         
+        var books = ["OLID:OL10446359M", "OLID:OL7829767M", "OLID:OL23752075M", "OLID:OL6807492M", "OLID:OL10236418M", "OLID:OL8667035M"];         
         var booksName = [];
        //Book details to be shown in lightbox mode 
         var bookGalleryDetails = {
