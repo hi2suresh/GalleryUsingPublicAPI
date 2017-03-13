@@ -15,13 +15,13 @@
                  $title.text('Title: ' + imageTitle);
                  
                  var $released = $('<p class="gallery-details"></p>');
-                 $released.text('Released: ' + objStoredMovies[imageTitle]['Released']);
+                 $released.text('Released: ' + objStoredMovies[imageTitle].Released);
                  
                  var $plot = $('<p></p>');
-                 $plot.text('Plot: ' + objStoredMovies[imageTitle]['Plot']);
+                 $plot.text('Plot: ' + objStoredMovies[imageTitle].Plot);
                  
                  var $awards = $('<p></p>');
-                 $awards.text('Awards: ' + objStoredMovies[imageTitle]['Awards']);
+                 $awards.text('Awards: ' + objStoredMovies[imageTitle].Awards);
                  
                  return $title.html() + '<br/>' + $released.html() + '<br/>' + $plot.html() + '<br/>' + $awards.html();
              }
@@ -78,7 +78,7 @@
          //Append Movie List Images
          function appendMovieList(movieArray){
              for(let i=0; i<movieArray.length; i++){
-                createList(movieList,objStoredMovies[movieArray[i]]['Poster'], movieArray[i]);
+                createList(movieList,objStoredMovies[movieArray[i]].Poster, movieArray[i]);
             }
         }
         
@@ -129,7 +129,7 @@
                  var objStoredBooks = JSON.parse(localStorage.getItem('storedBookDetails'));
                  var $title = $('<p class="gallery-details"></p>');
                  $title.text('Title: ' + imageTittle);
-                 var olid = objStoredBooks[imageTittle]['OLID'];
+                 var olid = objStoredBooks[imageTittle].OLID;
                  var $released = $('<p class="gallery-details"></p>');
                  $released.text('Released: ' + objStoredBooks[imageTittle][olid].publish_date);
                  
@@ -169,10 +169,10 @@
 
                     success : function(data) {
                       objBooks[data[books[i]].title] = data;
-                      objBooks[data[books[i]].title]['coversURL'] =  coversURL + books[i].replace(':','/') +'-L.jpg';
-                      objBooks[data[books[i]].title]['OLID'] = books[i];
+                      objBooks[data[books[i]].title].coversURL =  coversURL + books[i].replace(':','/') +'-L.jpg';
+                      objBooks[data[books[i]].title].OLID = books[i];
                       booksName.push(data[books[i]].title);
-                      createList(bookList, objBooks[data[books[i]].title]['coversURL'], data[books[i]].title );
+                      createList(bookList, objBooks[data[books[i]].title].coversURL, data[books[i]].title );
                     },
                     error : function(request,error)
                     {
@@ -192,7 +192,7 @@
         //Append Book List Images
         function appendBookList(bookArray){
              for(let i=0; i<bookArray.length; i++){
-                createList(bookList,objStoredBooks[bookArray[i]]['coversURL'], bookArray[i]);
+                createList(bookList,objStoredBooks[bookArray[i]].coversURL, bookArray[i]);
             }
         }
         
