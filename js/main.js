@@ -23,7 +23,7 @@
                  var $awards = $('<p></p>');
                  $awards.text('Awards: ' + objStoredMovies[imageTitle].Awards);
                  
-                 return $title.html() + '<br/>' + $released.html() + '<br/>' + $plot.html() + '<br/>' + $awards.html();
+                 return $title.html() + '<br/><br/>' + $released.html() + '<br/><br/>' + $plot.html() + '<br/><br/>' + $awards.html();
              }
         };
         //Get movie details from local storage if it exists
@@ -136,7 +136,7 @@
                  var $pages = $('<p class="gallery-details"></p>');
                  $pages.text('Number Of Pages: ' + objStoredBooks[imageTittle][olid].number_of_pages);
                                                   
-                 return $title.html() + '<br/>' + $released.html() + '<br/>' + $pages.html();
+                 return $title.html() + '<br/><br/>' + $released.html() + '<br/><br/>' + $pages.html();
              }
         };
         
