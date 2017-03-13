@@ -3,7 +3,7 @@
         Variables for Movies
         ********************************/
          var movieList = $('#movie-list');
-         var moviesName = ['The Departed','Django Unchained', 'The Shawshank Redemption', 'The Green Mile','Pulp Fiction','The Dark Knight'];
+         var moviesName = ['The Departed','Django Unchained', 'The Shawshank Redemption', 'The Green Mile','Pulp Fiction','The Dark Knight', 'The Bucket List', 'The Sixth Sense'];
          var sortableMoviesByYear = [];
          var sortedMoviesByYear = [];
         //Movie details to be shown in lightbox mode  
@@ -120,7 +120,7 @@
        var bookList = $('#book-list');
         var openLibraryURL = 'https://openlibrary.org/api/books';
         var coversURL = 'https://covers.openlibrary.org/b/';
-        var books = ["OLID:OL10446359M", "OLID:OL7829767M", "OLID:OL23752075M", "OLID:OL6807492M", "OLID:OL10236418M", "OLID:OL8667035M"];         
+        var books = ["OLID:OL10446359M", "OLID:OL7829767M", "OLID:OL23752075M", "OLID:OL6807492M", "OLID:OL10236418M", "OLID:OL8667035M", "OLID:OL24215162M", "OLID:OL8846075M"];         
         var booksName = [];
        //Book details to be shown in lightbox mode 
         var bookGalleryDetails = {
