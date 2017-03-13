@@ -122,6 +122,7 @@
         var coversURL = 'https://covers.openlibrary.org/b/';
         var books = ["OLID:OL10446359M", "OLID:OL7829767M", "OLID:OL23752075M", "OLID:OL6807492M", "OLID:OL10236418M", "OLID:OL8667035M", "OLID:OL24215162M", "OLID:OL8846075M"];         
         var booksName = [];
+        var sortedBooks = [];
        //Book details to be shown in lightbox mode 
         var bookGalleryDetails = {
              titleSrc: function(item) {
