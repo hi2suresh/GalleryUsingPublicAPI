@@ -60,6 +60,7 @@
                     alert("Request: "+JSON.stringify(request));
                 }
          });
+            
         }
         //After all of the ajax calls are complete, store the movie details in local storage    
         $(document).ajaxStop(function() {

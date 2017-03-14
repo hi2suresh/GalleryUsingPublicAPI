@@ -54,6 +54,8 @@ img {
 
 .mfp-bottom-bar {
     background: grey;
+    font-family: 'Nunito', sans-serif; 
+    color: black;
     
 }
 .gallery-details {
