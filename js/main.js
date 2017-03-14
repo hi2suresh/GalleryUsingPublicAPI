@@ -41,18 +41,21 @@
         function getMovieDetails(){
          var objMovies = {};
          for(let i=0; i<moviesName.length; i++){
-         $.ajax({
+            getMoviesByAjax(i);            
+        }
+            function getMoviesByAjax(index) {
+                 $.ajax({
                 url : 'http://www.omdbapi.com/',
                 type : 'GET',
                 data : {
-                    't' : moviesName[i]
+                    't' : moviesName[index]
                 },
                 dataType:'json',
                 success : function(data) {
                    
-                    objMovies[moviesName[i]] = data;
+                    objMovies[moviesName[index]] = data;
                     //Store movie name and its year for sorting purpose
-                    sortableMoviesByYear.push([moviesName[i],data.Year]);                    
+                    sortableMoviesByYear.push([moviesName[index],data.Year]);                    
                     createList(movieList,data.Poster, data.Title);
                 },
                 error : function(request,error)
@@ -60,8 +63,7 @@
                     alert("Request: "+JSON.stringify(request));
                 }
          });
-            
-        }
+            }
         //After all of the ajax calls are complete, store the movie details in local storage    
         $(document).ajaxStop(function() {
                 localStorage.setItem('storedMovieDetails',JSON.stringify(objMovies));
@@ -119,7 +121,6 @@
         Variables for Books
         ********************************/
        var bookList = $('#book-list');
-        var openLibraryURL = 'https://openlibrary.org/api/books';
         var coversURL = 'https://covers.openlibrary.org/b/';
         var books = ["OLID:OL10446359M", "OLID:OL7829767M", "OLID:OL23752075M", "OLID:OL6807492M", "OLID:OL10236418M", "OLID:OL8667035M", "OLID:OL24215162M", "OLID:OL8846075M"];         
         var booksName = [];
@@ -160,7 +161,11 @@
         function getBooksDetail(){
         var objBooks = {};
         for(let i=0; i<books.length; i++){
-            $.ajax({
+             getBooksByAjax(i);
+            }
+            
+            function getBooksByAjax(i) {
+                  $.ajax({
                     url :'https://openlibrary.org/api/books',
                     type : 'GET',
                     data : {
