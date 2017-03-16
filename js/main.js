@@ -66,21 +66,27 @@
             }
         //After all of the ajax calls are complete, store the movie details in local storage    
         $(document).ajaxStop(function() {
+            //Run only if objStoredMovies is not set already
+            if(objStoredMovies === null){
+                console.log("Ajaxstop in movie called");
                 localStorage.setItem('storedMovieDetails',JSON.stringify(objMovies));
                 var tempSortedMoviesByYear =  sortableMoviesByYear.sort(function(a,b){           
                                         return parseInt(a[1]) - parseInt(b[1]);
                                     });
-                 for(let i=0; i<tempSortedMoviesByYear.length; i++){
+                 for(var i=0; i<tempSortedMoviesByYear.length; i++){
                      sortedMoviesByYear.push(tempSortedMoviesByYear[i][0]);
                  }
                 localStorage.setItem('sortedMoviesByYear',JSON.stringify(sortedMoviesByYear)); 
                 invokeMagnificientPopup($('#movie-list a'), movieGalleryDetails);
+                //Set objStoredMovies to not null
+                objStoredMovies = JSON.parse(localStorage.getItem('storedMovieDetails'));
+            }
             });      
        
     }
          //Append Movie List Images
          function appendMovieList(movieArray){
-             for(let i=0; i<movieArray.length; i++){
+             for(var i=0; i<movieArray.length; i++){
                 createList(movieList,objStoredMovies[movieArray[i]].Poster, movieArray[i]);
             }
         }
@@ -142,9 +148,14 @@
                  return $title.html() + '<br/><br/>' + $released.html() + '<br/><br/>' + $pages.html();
              }
         };
-        
-        //Get Books details from local storage if it exists
+         //Get Books details from local storage if it exists
         var objStoredBooks = JSON.parse(localStorage.getItem('storedBookDetails'));
+        
+         //Load the book details in the webpage when a user clicks on the Get Book Details button
+         $('#book-details').on('click', function(e){
+        //Make this button invisible
+        $(this).css('display','none');
+        
         if(objStoredBooks === null){
                 getBooksDetail();
             }
@@ -153,6 +164,8 @@
             appendBookList(bookArray);
             invokeMagnificientPopup($('#book-list a'), bookGalleryDetails);
         }
+             createBooksSortButton();
+         });
         
         
         /********************************
@@ -189,10 +202,15 @@
             }
             //After all of the ajax calls are complete, store the book details in local storage
             $(document).ajaxStop(function() {
+                //Run only if objStoredBooks is not set already
+            if(objStoredBooks === null){
                 localStorage.setItem('storedBookDetails',JSON.stringify(objBooks));               
                 localStorage.setItem('storedBookNames',JSON.stringify(booksName)); 
                 localStorage.setItem('sortedBookNames',JSON.stringify(booksName.sort())); 
                 invokeMagnificientPopup($('#book-list a'), bookGalleryDetails);
+                //Set objStoredBooks to not null
+                objStoredBooks = JSON.parse(localStorage.getItem('storedBookDetails'));
+            }
             });            
         }
         
@@ -203,9 +221,17 @@
             }
         }
         
-
+         //Create sort button
+         function createBooksSortButton() {
+             $div = $('<div class="sort-div"></div>');
+             $sortButton = $('<button id="book-sort-button"></button>');
+             $sortButton.text('Sort Books By Name');
+             $div.append($sortButton);             
+             $('#openlib').append($div);
+             
+         }
         //Add event listener for Books sort button
-         $('#book-sort-button').click(function(){
+         $('#openlib').on('click','#book-sort-button',function(){
             objStoredBooks = JSON.parse(localStorage.getItem('storedBookDetails'));
             sortedBooks =  JSON.parse(localStorage.getItem('sortedBookNames'));
             //Remove the previously created list items
