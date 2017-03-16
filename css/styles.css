@@ -95,12 +95,12 @@ img {
     height: 200px;
 }
 
-.sort-div {
+.button-div {
     margin: auto;
     text-align: center;
 }
 
-.sort-div button {
+.button-div button {
     width: 80%;
     height: 40px;
     margin-bottom: 30px;

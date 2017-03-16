@@ -223,8 +223,8 @@
         
          //Create sort button
          function createBooksSortButton() {
-             $div = $('<div class="sort-div"></div>');
-             $sortButton = $('<button id="book-sort-button"></button>');
+             var $div = $('<div class="button-div"></div>');
+             var $sortButton = $('<button id="book-sort-button"></button>');
              $sortButton.text('Sort Books By Name');
              $div.append($sortButton);             
              $('#openlib').append($div);
