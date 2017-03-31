@@ -45,7 +45,7 @@
         }
             function getMoviesByAjax(index) {
                  $.ajax({
-                url : 'http://www.omdbapi.com/',
+                url : 'https://www.omdbapi.com/',
                 type : 'GET',
                 data : {
                     't' : moviesName[index]
